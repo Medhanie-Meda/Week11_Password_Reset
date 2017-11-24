@@ -59,11 +59,11 @@
     <env-entry>
         <env-entry-name>webmail-username</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>medateklen@gmail.com</env-entry-value>
+        <env-entry-value>test@gmail.com</env-entry-value>
     </env-entry>
     <env-entry>
         <env-entry-name>webmail-password</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>Azb1l10u$1455</env-entry-value>
+        <env-entry-value>1234</env-entry-value>
     </env-entry>
 </web-app>
