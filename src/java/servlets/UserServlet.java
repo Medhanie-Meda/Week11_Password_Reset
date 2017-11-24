@@ -25,15 +25,12 @@ public class UserServlet extends HttpServlet {
             try {
 
                 User user = us.get(selectedUsername);
-              
                 
                 request.setAttribute("selectedUser", user);
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
         
         
         List<User> users = null;        
@@ -77,7 +74,7 @@ public class UserServlet extends HttpServlet {
         try {
             users = us.getAll();
             
-            int number_notes = users.get(0).getNoteList().size();
+           // int number_notes = users.get(0).getNoteList().size();
             
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);

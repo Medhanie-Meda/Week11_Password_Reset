@@ -31,6 +31,24 @@ public class UserDB {
             em.close();
         }
     }
+    
+//    public int insertUUID(String uuid) throws NotesDBException {
+//        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+//        EntityTransaction trans = em.getTransaction();
+//        
+//        try {
+//            trans.begin();
+//            em.persist(uuid);
+//            trans.commit();
+//            return 1;
+//        } catch (Exception ex) {
+//            trans.rollback();
+//            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, "Cannot insert " + uuid, ex);
+//            throw new NotesDBException("Error inserting uuid");
+//        } finally {
+//            em.close();
+//        }
+//    }
 
     public int update(User user) throws NotesDBException {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
@@ -49,7 +67,31 @@ public class UserDB {
             em.close();
         }
     }
-
+    
+    /*
+     public int updateUUID(String uuid) throws NotesDBException {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        
+        //User user = new User();
+        user.setResetPasswordUUID(uuid);
+        
+        try {
+            trans.begin();
+            em.merge(uuid);
+            trans.commit();
+            return 1;
+        } catch (Exception ex) {
+            trans.rollback();
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, "Cannot update " + user.toString(), ex);
+            throw new NotesDBException("Error updating user");
+        } finally {
+            em.close();
+        }
+    }
+    */
+    
+    
     public List<User> getAll() throws NotesDBException {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         try {
@@ -82,8 +124,36 @@ public class UserDB {
         } finally {
             em.close();
         }
-    }
-
+    }    
+    
+    public User getUserByEmail(String email) throws NotesDBException {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        
+        try {
+            User user = (User) em.createNamedQuery("User.findByEmail", User.class).setParameter("email", email).getSingleResult();
+            return user;
+        } catch (Exception ex) {
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, "Cannot read users", ex);
+            throw new NotesDBException("Error getting Users");
+        } finally {
+            em.close();
+        }
+    }    
+    
+    public User getByUUID(String uuid) throws NotesDBException {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        
+        try {
+            User user = (User) em.createNamedQuery("User.findByResetPasswordUUID", User.class).setParameter("resetPasswordUUID", uuid).getSingleResult();
+            return user;
+        } catch (Exception ex) {
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, "Cannot read users", ex);
+            throw new NotesDBException("Error getting Users");
+        } finally {
+            em.close();
+        }
+    }       
+            
     public int delete(User user) throws NotesDBException {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = em.getTransaction();

@@ -6,12 +6,11 @@
 package domainmodel;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author awarsyle
+ * @author 608964
  */
 @Entity
 @Table(name = "user")
@@ -36,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
     , @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")
     , @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname")
-    , @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname")})
+    , @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname")
+    , @NamedQuery(name = "User.findByResetPasswordUUID", query = "SELECT u FROM User u WHERE u.resetPasswordUUID = :resetPasswordUUID")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,10 +59,13 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "Lastname")
     private String lastname;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
-    private List<Note> noteList;
+    @Basic(optional = false)
+    @Column(name = "ResetPasswordUUID")
+    private String resetPasswordUUID;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    private Collection<Note> noteCollection;
     @JoinColumn(name = "Role", referencedColumnName = "RoleID")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Role role;
 
     public User() {
@@ -79,6 +82,7 @@ public class User implements Serializable {
         this.active = active;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.resetPasswordUUID = resetPasswordUUID;
     }
 
     public String getUsername() {
@@ -129,13 +133,21 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
-    @XmlTransient
-    public List<Note> getNoteList() {
-        return noteList;
+    public String getResetPasswordUUID() {
+        return resetPasswordUUID;
     }
 
-    public void setNoteList(List<Note> noteList) {
-        this.noteList = noteList;
+    public void setResetPasswordUUID(String resetPasswordUUID) {
+        this.resetPasswordUUID = resetPasswordUUID;
+    }
+
+    @XmlTransient
+    public Collection<Note> getNoteCollection() {
+        return noteCollection;
+    }
+
+    public void setNoteCollection(Collection<Note> noteCollection) {
+        this.noteCollection = noteCollection;
     }
 
     public Role getRole() {
